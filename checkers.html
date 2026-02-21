@@ -2,34 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>International Checkers</title>
-  <link rel="stylesheet" href="./checkers.css?v=3">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CashBattle — Checkers</title>
+  <link rel="stylesheet" href="./checkers.css" />
 </head>
 <body>
   <div class="wrap">
-    <h1 class="title">International Checkers</h1>
+    <h1 class="title">CashBattle Game</h1>
 
-    <div class="card">
-      <div id="status" class="status">Turn: -</div>
-      <button id="restart" class="btn">Restart</button>
+    <div class="tabs">
+      <a class="tab" href="./chess.html">♟️ Chess</a>
+      <a class="tab active" href="./checkers.html">⚫ Checkers</a>
     </div>
 
-    <!-- ✅ Хамгийн чухал нь энэ -->
-    <div id="board" class="board" aria-label="checkers board"></div>
+    <div class="card">
+      <div class="cardTitle">International Checkers</div>
+      <div id="status" class="status">Turn: -</div>
+      <button id="restart" class="btn">Restart</button>
+
+      <div id="board" class="board" aria-label="Checkers Board"></div>
+      <div id="hint" class="hint">Tap a piece → choose a move</div>
+    </div>
 
     <div class="card">
-      <h2>Rules</h2>
-      <ul>
+      <div class="cardTitle">Rules</div>
+      <ul class="rules">
         <li>If capture is possible, you must capture.</li>
         <li>Multi-capture is allowed.</li>
         <li>Reach last row → becomes King.</li>
-        <li>King moves diagonally any distance.</li>
+        <li>King moves diagonally any distance, and captures by jumping over one enemy.</li>
       </ul>
-      <div id="hint" class="hint">Tap a piece → then tap a highlighted square.</div>
     </div>
   </div>
 
-  <script src="./checkers.js?v=3"></script>
+  <script src="./checkers.js"></script>
 </body>
 </html>
