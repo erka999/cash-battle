@@ -4,154 +4,54 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CashBattle — Checkers</title>
-  <link rel="stylesheet" href="./checkers.css" />
 
-  <!-- ✅ Extra style for Play-Store-like layout (safe to keep here) -->
-  <style>
-    .topBar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; margin-bottom:12px;
-    }
-    .brand{
-      display:flex; flex-direction:column; gap:2px;
-    }
-    .brand .app{
-      font-size:22px; font-weight:900; letter-spacing:.2px;
-    }
-    .brand .sub{
-      font-size:12px; opacity:.8;
-    }
-
-    .modeCard{
-      margin-top:12px;
-      padding:14px;
-      border-radius:18px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      backdrop-filter: blur(6px);
-    }
-    .modeTitle{
-      font-size:14px;
-      font-weight:900;
-      letter-spacing:.12em;
-      opacity:.9;
-      text-align:center;
-      margin:4px 0 12px 0;
-    }
-
-    .bigBtn{
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:16px 14px;
-      margin:10px 0;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
-      color:#fff;
-      font-size:17px;
-      font-weight:900;
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .bigBtn:active{ transform:scale(.99); }
-
-    .gGreen{ background:linear-gradient(180deg, #48ff7a, #17a34a); }
-    .gBlue{  background:linear-gradient(180deg, #42c7ff, #1d4ed8); }
-    .gCyan{  background:linear-gradient(180deg, #35f2ff, #0ea5e9); }
-
-    .smallRow{
-      display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;
-    }
-    .smallBtn{
-      flex:1;
-      min-width:140px;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.06);
-      color:#fff;
-      font-weight:800;
-      cursor:pointer;
-    }
-    .smallBtn:active{ transform:scale(.99); }
-
-    .gameCardTop{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .pill{
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      font-weight:800;
-    }
-    .hint{
-      margin-top:10px;
-      opacity:.9;
-    }
-  </style>
+  <!-- ✅ CACHE-ийг задалж шинэ CSS ачаалуулах -->
+  <link rel="stylesheet" href="./checkers.css?v=20260222" />
 </head>
-
 <body>
   <div class="wrap">
+    <h1 class="title">CashBattle Game</h1>
 
-    <!-- TOP -->
-    <div class="topBar">
-      <div class="brand">
-        <div class="app">CashBattle</div>
-        <div class="sub">Play Checkers • Human / Bot • Match</div>
-      </div>
-    </div>
-
-    <!-- TABS -->
     <div class="tabs">
       <a class="tab" href="./chess.html">♟️ Chess</a>
       <a class="tab active" href="./checkers.html">⚫ Checkers</a>
     </div>
 
-    <!-- MODE SELECT (Play Store like) -->
-    <div class="modeCard">
-      <div class="modeTitle">CHOOSE YOUR MODE</div>
+    <div class="panel">
+      <div class="panelTop">
+        <div class="panelTitle">CHOOSE YOUR MODE</div>
 
-      <!-- ✅ these IDs are used by checkers.js -->
-      <button id="modeBot" class="bigBtn gGreen">🤖 PLAY VS COMPUTER</button>
-      <button id="modeHuman" class="bigBtn gBlue">👥 2 PLAYERS (LOCAL)</button>
+        <button id="modeBot" class="btn big green">🤖 PLAY VS COMPUTER</button>
+        <button id="modeHuman" class="btn big blue">👥 2 PLAYERS (LOCAL)</button>
 
-      <div class="smallRow">
-        <button id="findMatch" class="smallBtn">🔎 FIND OPPONENT</button>
-        <button id="restart" class="smallBtn">🔄 RESTART</button>
+        <div class="row2">
+          <button id="findMatch" class="btn dark">🔎 FIND OPPONENT</button>
+          <button id="restart" class="btn dark">🔄 RESTART</button>
+        </div>
+
+        <div class="rowInfo">
+          <div id="status" class="pill">Turn: -</div>
+          <div class="pill">International Checkers</div>
+        </div>
       </div>
 
-      <div class="gameCardTop">
-        <div id="status" class="pill">Turn: -</div>
-        <div class="pill">International Checkers</div>
+      <div class="boardWrap">
+        <div id="board" class="board" aria-label="Checkers Board"></div>
+        <div id="hint" class="hint">Tap a piece → then tap a highlighted square to move</div>
       </div>
     </div>
 
-    <!-- GAME BOARD -->
-    <div class="card" style="margin-top:12px;">
-      <div id="board" class="board" aria-label="Checkers Board"></div>
-      <div id="hint" class="hint">Tap a piece → choose a move</div>
-    </div>
-
-    <!-- RULES -->
-    <div class="card">
-      <div class="cardTitle">Rules</div>
+    <div class="panel rulesPanel">
+      <div class="rulesTitle">Rules</div>
       <ul class="rules">
         <li>If capture is possible, you must capture.</li>
         <li>Multi-capture is allowed.</li>
         <li>Reach last row → becomes King.</li>
-        <li>King moves diagonally any distance, and captures by jumping over one enemy.</li>
+        <li>King moves diagonally any distance.</li>
       </ul>
     </div>
-
   </div>
 
-  <script src="./checkers.js"></script>
+  <script src="./checkers.js?v=20260222"></script>
 </body>
 </html>
