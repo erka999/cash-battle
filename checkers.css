@@ -234,3 +234,174 @@ body{
   border-radius: 999px;
   outline-offset: -10px;
 }
+/* ===== Letters on pieces (W/B) ===== */
+
+/* Piece container must be relative for ::after */
+.piece{
+  position: relative;
+}
+
+/* Letter */
+.piece::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 900;
+  font-size: 18px;         /* хүсвэл 16-22 хооронд өөрчил */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  /* light shadow for readability */
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  pointer-events: none;
+}
+
+/* White piece shows "W" in black */
+.piece.white::after{
+  content: "W";
+  color: #111;
+  text-shadow: 0 1px 2px rgba(255,255,255,.45);
+}
+
+/* Black piece shows "B" in white */
+.piece.black::after{
+  content: "B";
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.55);
+}
+
+/* ===== Letters on pieces (W/B) ===== */
+
+/* Piece container must be relative for ::after */
+.piece{
+  position: relative;
+}
+
+/* Letter */
+.piece::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 900;
+  font-size: 18px;         /* хүсвэл 16-22 хооронд өөрчил */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  /* light shadow for readability */
+  text-shadow: 0 1px 2px rgba(0,0,0,.35);
+  pointer-events: none;
+}
+
+/* White piece shows "W" in black */
+.piece.white::after{
+  content: "W";
+  color: #111;
+  text-shadow: 0 1px 2px rgba(255,255,255,.45);
+}
+
+/* Black piece shows "B" in white */
+.piece.black::after{
+  content: "B";
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.55);
+}
+
+/* ===== Letters on pieces (W/B) ===== */
+.piece{
+  position: relative;
+}
+
+.piece::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 900;
+
+  /* ✅ ҮСГИЙГ ТОМ БОЛГОНО */
+  font-size: 28px;         /* 24–34 хооронд өөрчилж болно */
+  line-height: 1;
+
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  /* ✅ ТОДРУУЛАХ */
+  z-index: 2;
+  -webkit-text-stroke: 1px rgba(0,0,0,.35);
+
+  /* ✅ СҮҮДЭР */
+  text-shadow: 0 2px 4px rgba(0,0,0,.55);
+
+  pointer-events: none;
+}
+
+/* White piece shows "W" in black */
+.piece.white::after{
+  content: "W";
+  color: #111;
+  -webkit-text-stroke: 1px rgba(255,255,255,.35);
+  text-shadow: 0 2px 4px rgba(255,255,255,.25);
+}
+
+/* Black piece shows "B" in white */
+.piece.black::after{
+  content: "B";
+  color: #fff;
+  -webkit-text-stroke: 1px rgba(0,0,0,.55);
+  text-shadow: 0 2px 4px rgba(0,0,0,.75);
+}
+/* ===== FORCE PIECE LETTERS (PUT THIS AT VERY BOTTOM) ===== */
+.piece{ position: relative !important; }
+
+.piece::after{
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-weight: 900 !important;
+  font-size: 34px !important;     /* эндээс томруулна */
+  line-height: 1 !important;
+
+  z-index: 10 !important;
+  pointer-events: none !important;
+
+  text-transform: uppercase !important;
+  letter-spacing: .5px !important;
+
+  /* тодруулах */
+  -webkit-text-stroke: 1px rgba(0,0,0,.55) !important;
+  text-shadow: 0 2px 6px rgba(0,0,0,.65) !important;
+}
+
+/* Цагаан дээр хар үсэг */
+.piece.white::after{
+  content: "W" !important;
+  color: #111 !important;
+  -webkit-text-stroke: 1px rgba(255,255,255,.35) !important;
+}
+
+/* Хар дээр цагаан үсэг */
+.piece.black::after{
+  content: "B" !important;
+  color: #fff !important;
+}
+
+/* Хаан */
+.piece.king.white::after{ content: "WK" !important; }
+.piece.king.black::after{ content: "BK" !important; }
