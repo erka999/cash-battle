@@ -9,17 +9,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // ===== OPTIONAL MODE BUTTONS (if you add later in HTML) =====
-  // <button id="modeHuman">Human vs Human</button>
-  // <button id="modeBot">Play vs Bot</button>
+  // ===== OPTIONAL MODE BUTTONS (in your HTML) =====
+  // <button id="modeHuman">👥 Human vs Human</button>
+  // <button id="modeBot">🤖 Play vs Bot</button>
+  // <button id="findMatch">🔎 Find Opponent</button>
   const modeHumanBtn = document.getElementById("modeHuman");
   const modeBotBtn = document.getElementById("modeBot");
+  const findMatchBtn = document.getElementById("findMatch");
 
   restartBtn.addEventListener("click", () => init(true));
 
   // ===== BOT SETTINGS =====
-  // MODE: "human" => 2 хүн
-  // MODE: "bot"   => bot тоглоно
+  // MODE: "human" => 2 хүн (нэг утсан дээр ээлжилж)
+  // MODE: "bot"   => Bot автоматаар нүүнэ
   let MODE = "human";
   let BOT_COLOR = "b"; // bot plays black by default
 
@@ -114,13 +116,26 @@ document.addEventListener("DOMContentLoaded", () => {
           sq.appendChild(el);
         }
 
+        // ✅ click (desktop)
         sq.addEventListener("click", onSquareClick);
+
+        // ✅ pointerdown (Telegram/WebView дээр илүү найдвартай)
+        sq.addEventListener(
+          "pointerdown",
+          (ev) => {
+            ev.preventDefault();
+            onSquareClick(ev);
+          },
+          { passive: false }
+        );
+
         boardEl.appendChild(sq);
       }
     }
   }
 
   function onSquareClick(e) {
+    // click дээр dataset нь currentTarget дээр ирнэ
     const r = Number(e.currentTarget.dataset.r);
     const c = Number(e.currentTarget.dataset.c);
 
@@ -305,7 +320,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function botMove() {
-    // If not bot's turn, stop
     if (MODE !== "bot" || S.turn !== BOT_COLOR) return;
 
     const move = botPickMove();
@@ -314,6 +328,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     applyMove(move);
+
+    // Bot олон үсрэлт үргэлжилж байвал bot дахин нүүнэ
+    if (MODE === "bot" && S.chainFrom && S.turn === BOT_COLOR) {
+      maybeBotTurn();
+    }
   }
 
   function maybeBotTurn() {
@@ -323,9 +342,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // ===== QUICK MATCH FALLBACK (NO SERVER) =====
+  // Энэ нь жинхэнэ онлайн match биш (serverгүй болохоор боломжгүй).
+  // Харин UX: "хүн хайж байна" гэж 10 сек хүлээгээд олдохгүй бол Bot горим руу автоматаар шилжинэ.
+  let matchTimer = null;
+
+  function startFindingOpponent() {
+    MODE = "human";
+    BOT_COLOR = "b";
+    init(true);
+
+    setHint("Finding opponent... (if no one joins, switching to Bot in 10s)");
+
+    if (matchTimer) clearTimeout(matchTimer);
+    matchTimer = setTimeout(() => {
+      MODE = "bot";
+      BOT_COLOR = "b";
+      init(true);
+      setHint("No opponent found — switched to Bot mode (Bot = Black)");
+    }, 10000);
+  }
+
   // ===== OPTIONAL BUTTON WIRING =====
   if (modeHumanBtn) {
     modeHumanBtn.addEventListener("click", () => {
+      if (matchTimer) clearTimeout(matchTimer);
       MODE = "human";
       setHint("Mode: Human vs Human");
       render();
@@ -334,11 +375,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (modeBotBtn) {
     modeBotBtn.addEventListener("click", () => {
+      if (matchTimer) clearTimeout(matchTimer);
       MODE = "bot";
       BOT_COLOR = "b"; // bot plays black
       init(true);      // restart
       setHint("Mode: Play vs Bot (Bot = Black)");
     });
+  }
+
+  if (findMatchBtn) {
+    findMatchBtn.addEventListener("click", startFindingOpponent);
   }
 
   init(true);
