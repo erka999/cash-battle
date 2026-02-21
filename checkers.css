@@ -1,361 +1,262 @@
 :root{
-  --bg:#0f0f10;
-  --card:#17181b;
-  --border:#2a2c31;
-  --text:#f2f3f5;
-  --muted:#a8adb7;
-  --light:#e7e7e7;
-  --dark:#2b2f36;
-  --sel:#ffd24d;
-  --move:#45b7ff;
-  --cap:#ff5a5a;
+  --bg:#0f1115;
+  --card:#1b1f27;
+  --card2:#141820;
+  --text:#e9eef7;
+  --muted:#a9b2c3;
+  --line:rgba(255,255,255,.08);
+  --shadow: 0 10px 30px rgba(0,0,0,.45);
 }
 
 *{ box-sizing:border-box; }
 body{
   margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display:flex;
-  justify-content:center;
-  padding:16px;
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(1200px 600px at 50% 0%, #1a2233, var(--bg));
+  color:var(--text);
 }
 
-.wrap{ width:min(560px, 96vw); }
+.wrap{
+  width:min(560px, 96vw);
+  margin:16px auto 28px;
+}
 
 .title{
   text-align:center;
+  margin:18px 0 14px;
   font-size:34px;
-  font-weight:900;
-  margin:10px 0 14px;
+  letter-spacing:.5px;
 }
 
 .tabs{
   display:flex;
   gap:10px;
   justify-content:center;
-  margin-bottom:14px;
+  margin: 10px 0 14px;
 }
+
 .tab{
   text-decoration:none;
-  color:var(--text);
-  background:#dcdcdc;
   color:#111;
-  padding:10px 14px;
+  background:#e7e7e7;
+  padding:10px 16px;
   border-radius:12px;
-  font-weight:800;
+  font-weight:700;
+  box-shadow: var(--shadow);
 }
 .tab.active{
-  background:#bfc6d3;
+  background:#bfc8d9;
 }
 
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
+.panel{
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  border:1px solid var(--line);
   border-radius:18px;
+  box-shadow: var(--shadow);
   padding:14px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.35);
-  margin-bottom:14px;
+  margin: 12px 0;
 }
 
-.cardTitle{
+.panelTop{
+  padding:6px 6px 12px;
+}
+
+.panelTitle{
   text-align:center;
   font-weight:900;
-  font-size:22px;
-  margin:8px 0 6px;
-}
-
-.status{
-  text-align:center;
-  color:var(--muted);
-  font-weight:700;
-  margin-bottom:10px;
+  letter-spacing:2px;
+  color:rgba(255,255,255,.75);
+  margin: 4px 0 12px;
 }
 
 .btn{
-  display:block;
-  margin:0 auto 12px;
-  border:1px solid var(--border);
-  background:#e8e8e8;
-  color:#111;
+  width:100%;
+  border:none;
+  cursor:pointer;
+  border-radius:18px;
+  padding:14px 14px;
   font-weight:900;
-  padding:10px 18px;
-  border-radius:14px;
+  color:white;
+  margin: 8px 0;
+  box-shadow: 0 8px 18px rgba(0,0,0,.35);
+  background:#2b2f3a;
 }
 
-.hint{
-  text-align:center;
-  margin-top:10px;
-  color:var(--muted);
-  font-size:13px;
-}
-
-.rules{
-  margin:10px 0 0;
+.btn.big{ padding:18px 14px; font-size:16px; }
+.btn.green{ background: linear-gradient(180deg, #37ef7f, #1c9b4c); }
+.btn.blue{ background: linear-gradient(180deg, #35b6ff, #2167d8); }
+.btn.dark{
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid var(--line);
   color:var(--text);
-  line-height:1.55;
+}
+
+.row2{
+  display:flex;
+  gap:10px;
+  margin-top:6px;
+}
+.row2 .btn{ width:50%; }
+
+.rowInfo{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+.pill{
+  flex:1;
+  padding:12px 14px;
+  border-radius:14px;
+  background: rgba(0,0,0,.25);
+  border:1px solid var(--line);
+  font-weight:800;
+  color:var(--text);
+}
+
+.boardWrap{
+  margin-top: 8px;
+  padding: 10px;
+  border-radius:18px;
+  background: rgba(0,0,0,.20);
+  border:1px solid var(--line);
 }
 
 .board{
   width:100%;
   aspect-ratio: 1 / 1;
-  border-radius:18px;
-  overflow:hidden;
-  border:1px solid var(--border);
   display:grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  touch-action: manipulation;
+  border-radius:16px;
+  overflow:hidden;
+  background:#0c0f14;
+  border:1px solid rgba(255,255,255,.10);
 }
 
 .square{
+  display:flex;
+  align-items:center;
+  justify-content:center;
   position:relative;
+  user-select:none;
+  -webkit-user-select:none;
+  touch-action: manipulation;
 }
-.square.light{ background: var(--light); }
-.square.dark{ background: var(--dark); }
+
+.square.light{ background:#e9e9e9; }
+.square.dark{ background:#2a2f38; }
 
 .square.selected{
-  outline: 4px solid rgba(255,210,77,.85);
-  outline-offset: -4px;
+  outline:3px solid rgba(255,255,255,.5);
+  outline-offset:-3px;
 }
-.square.move{
-  box-shadow: inset 0 0 0 4px rgba(69,183,255,.75);
+
+.square.move::after{
+  content:"";
+  width:18%;
+  height:18%;
+  border-radius:50%;
+  background: rgba(80,200,255,.85);
+  position:absolute;
 }
-.square.capture{
-  box-shadow: inset 0 0 0 4px rgba(255,90,90,.85);
+
+.square.capture::after{
+  content:"";
+  width:22%;
+  height:22%;
+  border-radius:50%;
+  background: rgba(255,80,80,.90);
+  position:absolute;
 }
+
+.hint{
+  text-align:center;
+  color: rgba(255,255,255,.65);
+  margin-top:10px;
+  font-weight:700;
+}
+
+/* ================================
+   ✅ PIECES: Pawn-style (NOT circle)
+   ================================ */
 
 .piece{
   width:72%;
   height:72%;
-  border-radius:50%;
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  box-shadow: 0 10px 18px rgba(0,0,0,.35);
-}
-
-.piece.white{
-  background: radial-gradient(circle at 30% 30%, #ffffff, #cfcfcf);
-}
-.piece.black{
-  background: radial-gradient(circle at 30% 30%, #5b606a, #111318);
-}
-
-.piece.king::after{
-  content:"K";
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:1000;
-  color: rgba(255,255,255,.92);
-  text-shadow: 0 2px 6px rgba(0,0,0,.65);
-  font-size: 18px;
-}
-.piece.white.king::after{
-  color: rgba(20,20,20,.85);
-  text-shadow:none;
-}
-/* ===== Pawn-like checkers pieces (no images) ===== */
-
-/* existing .piece rules байвал СОЛИОРЙ эсвэл хамгийн доор НЭМЭЭД override болно */
-.piece{
-  width: 78%;
-  height: 78%;
-  margin: auto;
-  position: relative;
-  border-radius: 18px;
-  transform: translateY(-2px);
+  position:relative;
+  border-radius: 14px !important; /* ✅ circle болиулна */
   box-shadow:
-    0 10px 18px rgba(0,0,0,.35),
-    inset 0 2px 0 rgba(255,255,255,.18),
-    inset 0 -6px 10px rgba(0,0,0,.35);
-}
-
-/* Pawn base (суурь) */
-.piece::before{
-  content:"";
-  position:absolute;
-  left: 12%;
-  right: 12%;
-  bottom: 10%;
-  height: 38%;
-  border-radius: 16px;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.14),
-    inset 0 -10px 14px rgba(0,0,0,.35);
-}
-
-/* Pawn head (толгой) */
-.piece::after{
-  content:"";
-  position:absolute;
-  left: 22%;
-  right: 22%;
-  top: 14%;
-  height: 42%;
-  border-radius: 999px;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.18),
-    inset 0 -10px 14px rgba(0,0,0,.35);
-}
-
-/* WHITE pawn */
-.piece.white{
-  background: radial-gradient(circle at 30% 25%, #ffffff, #d9d9d9 55%, #a9a9a9 100%);
-  border: 1px solid rgba(255,255,255,.25);
-}
-.piece.white::before{
-  background: linear-gradient(#f6f6f6, #cfcfcf 60%, #9e9e9e);
-}
-.piece.white::after{
-  background: radial-gradient(circle at 30% 25%, #ffffff, #dcdcdc 60%, #a7a7a7);
-}
-
-/* BLACK pawn */
-.piece.black{
-  background: radial-gradient(circle at 30% 25%, #4b4b4b, #232323 60%, #0b0b0b 100%);
-  border: 1px solid rgba(255,255,255,.10);
-}
-.piece.black::before{
-  background: linear-gradient(#3d3d3d, #1b1b1b 60%, #080808);
-}
-.piece.black::after{
-  background: radial-gradient(circle at 30% 25%, #5a5a5a, #262626 60%, #070707);
-}
-
-/* KING styling (хаан) — дээр нь бөгж/титэм маягийн цагираг */
-.piece.king{
-  outline: 2px solid rgba(255, 215, 0, .75);
-  outline-offset: -6px;
-}
-.piece.king::after{
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.18),
-    inset 0 -10px 14px rgba(0,0,0,.35),
-    0 0 0 3px rgba(255,215,0,.55);
-}
-
-/* Optional: selected highlight илүү тод */
-.square.selected .piece{
-  box-shadow:
-    0 0 0 3px rgba(0,200,255,.55),
-    0 10px 18px rgba(0,0,0,.35),
-    inset 0 2px 0 rgba(255,255,255,.18),
-    inset 0 -6px 10px rgba(0,0,0,.35);
-}
-/* ===== FORCE Pawn-like pieces (override) ===== */
-.board .piece{
-  width: 78% !important;
-  height: 78% !important;
-  margin: auto !important;
-  position: relative !important;
-
-  /* энэ хамгийн гол нь: дугуйг болиулна */
-  border-radius: 18px !important;
-
-  transform: translateY(-2px) !important;
-  box-shadow:
-    0 10px 18px rgba(0,0,0,.35),
-    inset 0 2px 0 rgba(255,255,255,.18),
-    inset 0 -6px 10px rgba(0,0,0,.35) !important;
+    0 12px 18px rgba(0,0,0,.45),
+    inset 0 3px 10px rgba(255,255,255,.10);
 }
 
 /* base */
-.board .piece::before{
-  content:"" !important;
-  position:absolute !important;
-  left: 12% !important;
-  right: 12% !important;
-  bottom: 10% !important;
-  height: 38% !important;
-  border-radius: 16px !important;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.14),
-    inset 0 -10px 14px rgba(0,0,0,.35) !important;
+.piece::before{
+  content:"";
+  position:absolute;
+  left:10%;
+  right:10%;
+  bottom:8%;
+  height:38%;
+  border-radius:16px;
+  box-shadow: inset 0 2px 6px rgba(255,255,255,.10);
 }
 
 /* head */
-.board .piece::after{
-  content:"" !important;
-  position:absolute !important;
-  left: 22% !important;
-  right: 22% !important;
-  top: 14% !important;
-  height: 42% !important;
-  border-radius: 999px !important;
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.18),
-    inset 0 -10px 14px rgba(0,0,0,.35) !important;
-}
-
-/* WHITE */
-.board .piece.white{
-  background: radial-gradient(circle at 30% 25%, #ffffff, #d9d9d9 55%, #a9a9a9 100%) !important;
-  border: 1px solid rgba(255,255,255,.25) !important;
-}
-.board .piece.white::before{
-  background: linear-gradient(#f6f6f6, #cfcfcf 60%, #9e9e9e) !important;
-}
-.board .piece.white::after{
-  background: radial-gradient(circle at 30% 25%, #ffffff, #dcdcdc 60%, #a7a7a7) !important;
-}
-
-/* BLACK */
-.board .piece.black{
-  background: radial-gradient(circle at 30% 25%, #4b4b4b, #232323 60%, #0b0b0b 100%) !important;
-  border: 1px solid rgba(255,255,255,.10) !important;
-}
-.board .piece.black::before{
-  background: linear-gradient(#3d3d3d, #1b1b1b 60%, #080808) !important;
-}
-.board .piece.black::after{
-  background: radial-gradient(circle at 30% 25%, #5a5a5a, #262626 60%, #070707) !important;
-}
-
-/* KING */
-.board .piece.king{
-  outline: 2px solid rgba(255, 215, 0, .75) !important;
-  outline-offset: -6px !important;
-}
-.board .piece.king::after{
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.18),
-    inset 0 -10px 14px rgba(0,0,0,.35),
-    0 0 0 3px rgba(255,215,0,.55) !important;
-}
-/* ===== FORCE pawn-style pieces ===== */
-
-.board .piece{
-  border-radius: 12px !important;   /* дугуйг болиулна */
-  position: relative !important;
-  transform: translateY(-2px);
-}
-
-/* доод суурь */
-.board .piece::before{
-  content:"";
-  position:absolute;
-  left:15%;
-  right:15%;
-  bottom:10%;
-  height:35%;
-  background: linear-gradient(#dcdcdc,#9f9f9f);
-  border-radius:14px;
-}
-
-/* толгой */
-.board .piece::after{
+.piece::after{
   content:"";
   position:absolute;
   left:28%;
   right:28%;
-  top:15%;
-  height:38%;
-  background: radial-gradient(circle,#ffffff,#bfbfbf);
+  top:10%;
+  height:40%;
   border-radius:50%;
+  box-shadow: inset 0 2px 8px rgba(255,255,255,.14);
 }
+
+/* white / black materials */
+.piece.white{
+  background: linear-gradient(180deg, #ffffff, #cfcfcf);
+}
+.piece.white::before{
+  background: linear-gradient(180deg, #f3f3f3, #a8a8a8);
+}
+.piece.white::after{
+  background: radial-gradient(circle at 35% 30%, #ffffff, #bdbdbd);
+}
+
+.piece.black{
+  background: linear-gradient(180deg, #2c2f36, #111318);
+}
+.piece.black::before{
+  background: linear-gradient(180deg, #242831, #0a0c10);
+}
+.piece.black::after{
+  background: radial-gradient(circle at 35% 30%, #3b404a, #0b0d11);
+}
+
+/* King indicator */
+.piece.king{
+  outline: 2px solid rgba(255,215,0,.8);
+  outline-offset: -2px;
+}
+.piece.king::after{
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,.14),
+    0 0 0 3px rgba(255,215,0,.35);
+}
+
+.rulesPanel{ padding:18px; }
+.rulesTitle{
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
+  margin: 4px 0 14px;
+}
+
+.rules{
+  margin:0;
+  padding-left:18px;
+  color: rgba(255,255,255,.8);
+  font-weight:700;
+}
+.rules li{ margin: 10px 0; }
