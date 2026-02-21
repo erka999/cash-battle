@@ -4,54 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CashBattle — Checkers</title>
-
-  <!-- ✅ CACHE-ийг задалж шинэ CSS ачаалуулах -->
-  <link rel="stylesheet" href="./checkers.css?v=20260222" />
+  <link rel="stylesheet" href="./checkers.css?v=7" />
 </head>
 <body>
   <div class="wrap">
-    <h1 class="title">CashBattle Game</h1>
-
     <div class="tabs">
       <a class="tab" href="./chess.html">♟️ Chess</a>
       <a class="tab active" href="./checkers.html">⚫ Checkers</a>
     </div>
 
-    <div class="panel">
-      <div class="panelTop">
-        <div class="panelTitle">CHOOSE YOUR MODE</div>
+    <div class="card">
+      <div class="cardTitle smallCaps">CHOOSE YOUR MODE</div>
 
-        <button id="modeBot" class="btn big green">🤖 PLAY VS COMPUTER</button>
-        <button id="modeHuman" class="btn big blue">👥 2 PLAYERS (LOCAL)</button>
-
-        <div class="row2">
-          <button id="findMatch" class="btn dark">🔎 FIND OPPONENT</button>
-          <button id="restart" class="btn dark">🔄 RESTART</button>
-        </div>
-
-        <div class="rowInfo">
-          <div id="status" class="pill">Turn: -</div>
-          <div class="pill">International Checkers</div>
-        </div>
+      <div class="bigModes">
+        <button id="modeBot" class="bigBtn bigGreen">🤖 PLAY VS COMPUTER</button>
+        <button id="modeHuman" class="bigBtn bigBlue">👥 2 PLAYERS (LOCAL)</button>
       </div>
 
-      <div class="boardWrap">
-        <div id="board" class="board" aria-label="Checkers Board"></div>
-        <div id="hint" class="hint">Tap a piece → then tap a highlighted square to move</div>
+      <div class="row2">
+        <button id="findMatch" class="btn wide">🔎 FIND OPPONENT</button>
+        <button id="restart" class="btn wide">🔁 RESTART</button>
       </div>
+
+      <div class="infoRow">
+        <div id="status" class="pill">Turn: -</div>
+        <div class="pill">International Checkers</div>
+      </div>
+
+      <div id="board" class="board" aria-label="Checkers Board"></div>
+      <div id="hint" class="hint">Tap a piece → then tap a highlighted square to move</div>
     </div>
 
-    <div class="panel rulesPanel">
-      <div class="rulesTitle">Rules</div>
+    <div class="card">
+      <div class="cardTitle">Rules</div>
       <ul class="rules">
         <li>If capture is possible, you must capture.</li>
         <li>Multi-capture is allowed.</li>
         <li>Reach last row → becomes King.</li>
-        <li>King moves diagonally any distance.</li>
+        <li>King moves diagonally any distance, and captures by jumping over one enemy.</li>
       </ul>
     </div>
   </div>
 
-  <script src="./checkers.js?v=20260222"></script>
+  <script src="./checkers.js?v=7"></script>
 </body>
 </html>
