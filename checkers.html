@@ -1,44 +1,81 @@
-<!doctype html>
-<html lang="mn">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Төгс Даам</title>
-  <link rel="stylesheet" href="checkers.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash Battle Game</title>
+
+<style>
+body{
+  background:#111;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+  margin:0;
+  padding:20px;
+}
+
+h1{
+  margin-bottom:20px;
+}
+
+.menu button{
+  padding:12px 20px;
+  margin:10px;
+  border-radius:12px;
+  border:none;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.card{
+  background:#1b1b1b;
+  border-radius:16px;
+  padding:20px;
+  margin-top:20px;
+}
+</style>
 </head>
+
 <body>
-  <div class="app">
-    <header class="top">
-      <div class="brand">⚫⚪ Төгс Даам</div>
-      <div class="status" id="status">Ээлж: ⚪ Цагаан</div>
-      <div class="actions">
-        <button id="restart">Дахин эхлүүлэх</button>
-      </div>
-    </header>
 
-    <main class="main">
-      <div class="board-wrap">
-        <div id="board" class="board" aria-label="Checkers board"></div>
-      </div>
+<h1>🎮 Cash Battle Game</h1>
 
-      <section class="panel">
-        <div class="card">
-          <div class="card-title">Дүрэм</div>
-          <ul class="rules">
-            <li>Идэх боломж байвал <b>заавал иднэ</b></li>
-            <li>Олон үсрэлт (multi-capture) боломжтой</li>
-            <li>Доод мөр хүрвэл <b>Хатан (King)</b> болно</li>
-            <li>Хатан урт диагоналиар явна, идэлт ч урт</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-title">Тусламж</div>
-          <div class="hint" id="hint">Чулуу дээр дар → боломжит нүүдэл сонго</div>
-        </div>
-      </section>
-    </main>
-  </div>
+<div class="menu">
+  <button onclick="openChess()">♟️ Chess</button>
+  <button onclick="openCheckers()">⚫ Checkers</button>
+</div>
 
-  <script src="checkers.js"></script>
+<div id="game" class="card">
+Select a game
+</div>
+
+<script>
+function openChess(){
+document.getElementById("game").innerHTML =
+`
+<h2>Chess Game</h2>
+<p>Two players can play chess.</p>
+<p>Winner will be announced.</p>
+<a href="chess.html">Start Chess</a>
+`;
+}
+
+function openCheckers(){
+document.getElementById("game").innerHTML =
+`
+<h2>Checkers Game</h2>
+<p>Rules:</p>
+<ul style="text-align:left">
+<li>You must capture if possible</li>
+<li>Multi-capture allowed</li>
+<li>Reach last row to become King</li>
+<li>Kings move diagonally long</li>
+</ul>
+<a href="checkers.html">Start Checkers</a>
+`;
+}
+</script>
+
 </body>
 </html>
