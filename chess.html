@@ -35,7 +35,8 @@
       border-radius:14px;
       overflow:hidden;
       box-shadow: 0 10px 30px rgba(0,0,0,.35);
-      touch-action: none; /* mobile drag stable */
+      touch-action: none;
+      background:#000;
     }
     .panel{
       margin-top:10px;
@@ -75,15 +76,12 @@
       cursor:pointer;
     }
     button:active{ transform:scale(.99); }
-
     .hint{ font-size:12px; opacity:.85; }
 
-    /* highlight squares */
     .hl-from { box-shadow: inset 0 0 0 4px rgba(255, 215, 0, 0.65); }
     .hl-move { box-shadow: inset 0 0 0 4px rgba(0, 180, 255, 0.55); }
     .hl-cap  { box-shadow: inset 0 0 0 4px rgba(255, 70, 70, 0.65); }
 
-    /* Move list */
     .moves{
       max-height:160px;
       overflow:auto;
@@ -96,7 +94,6 @@
       white-space:pre-wrap;
     }
 
-    /* Promotion modal */
     .modal{
       position:fixed; inset:0;
       background:rgba(0,0,0,.55);
@@ -152,15 +149,6 @@
     </div>
   </div>
 
-  <!-- ✅ IMPORTANT: jQuery must be first for chessboard.js -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <!-- chess.js (rules engine) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
-
-  <!-- chessboard.js (UI board) -->
-  <script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
-
   <!-- Promotion modal -->
   <div class="modal" id="promoModal">
     <div class="modalCard">
@@ -171,17 +159,24 @@
         <button data-p="b">⛪ Bishop</button>
         <button data-p="n">🐴 Knight</button>
       </div>
-      <div class="hint" style="margin-top:10px; opacity:.8;">(Албан дүрэм: pawn сүүлд хүрвэл promotion заавал.)</div>
+      <div class="hint" style="margin-top:10px; opacity:.8;">(Pawn сүүлд хүрвэл promotion заавал.)</div>
     </div>
   </div>
 
+  <!-- ✅ jQuery must be first for chessboard.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- chess.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0/chess.min.js"></script>
+
+  <!-- chessboard.js -->
+  <script src="https://unpkg.com/chessboardjs@1.0.0/www/js/chessboard-1.0.0.min.js"></script>
+
   <script>
-    // ===== State =====
     const game = new Chess();
     let board = null;
 
-    // Promotion flow
-    let pendingPromotion = null; // {from, to}
+    let pendingPromotion = null;
 
     function setText(id, text){ document.getElementById(id).textContent = text; }
 
@@ -208,7 +203,7 @@
     }
 
     function updateMoves(){
-      const hist = game.history(); // SAN
+      const hist = game.history();
       if(!hist.length){ setText('moves','-'); return; }
       let out = '';
       for(let i=0;i<hist.length;i+=2){
@@ -238,7 +233,8 @@
         status = 'ТЭНЦЭЭ (Draw)';
         winner = 'Win: Draw';
       }else{
-        status = game.inCheck() ? 'ШАХ!' : 'Тоглолт үргэлжилж байна';
+        // ✅ ЭНД ЗАСЛАА: inCheck -> isCheck
+        status = game.isCheck() ? 'ШАХ!' : 'Тоглолт үргэлжилж байна';
       }
 
       setText('status', `Төлөв: ${status}`);
@@ -262,12 +258,10 @@
       document.getElementById('promoModal').style.display = 'none';
     }
 
-    // ===== chessboard callbacks =====
     function onDragStart(source, piece){
       removeHighlights();
       if(game.isGameOver()) return false;
 
-      // only move side to move
       const isWhiteTurn = game.turn()==='w';
       if(isWhiteTurn && piece.startsWith('b')) return false;
       if(!isWhiteTurn && piece.startsWith('w')) return false;
@@ -278,13 +272,12 @@
     function onDrop(source, target){
       removeHighlights();
 
-      // if promotion needed -> ask user
       if(needsPromotion(source, target)){
         showPromotion(source, target);
-        return; // stop here, we'll make move after selection
+        return;
       }
 
-      const move = game.move({from:source, to:target, promotion:'q'}); // default queen if needed
+      const move = game.move({from:source, to:target, promotion:'q'});
       if(move === null) return 'snapback';
 
       updateStatus();
@@ -294,11 +287,19 @@
       board.position(game.fen());
     }
 
-    // ===== init =====
     function init(){
+      if(typeof Chessboard === 'undefined'){
+        alert('Chessboard.js ачааллахгүй байна (интернет/blocked).');
+        return;
+      }
+
       board = Chessboard('board', {
         position: 'start',
         draggable: true,
+
+        // ✅ Пиесийн зураг алга болдогийг заслаа
+        pieceTheme: 'https://unpkg.com/chessboardjs@1.0.0/www/img/chesspieces/wikipedia/{piece}.png',
+
         onDragStart,
         onDrop,
         onSnapEnd
@@ -314,7 +315,7 @@
       });
 
       document.getElementById('undo').addEventListener('click', ()=>{
-        game.undo(); // single undo (1 нүүдэл)
+        game.undo();
         board.position(game.fen());
         removeHighlights();
         updateStatus();
@@ -322,7 +323,6 @@
 
       document.getElementById('flip').addEventListener('click', ()=> board.flip());
 
-      // tap/click highlight
       document.getElementById('board').addEventListener('click', (e)=>{
         const sq = e.target.closest('.square-55d63');
         if(!sq) return;
@@ -332,18 +332,16 @@
         highlightMoves(square);
       });
 
-      // promotion selection
       document.querySelectorAll('#promoModal button[data-p]').forEach(btn=>{
         btn.addEventListener('click', ()=>{
           if(!pendingPromotion) return;
-          const p = btn.getAttribute('data-p'); // q r b n
+          const p = btn.getAttribute('data-p');
           const {from, to} = pendingPromotion;
 
           const move = game.move({from, to, promotion: p});
           hidePromotion();
           pendingPromotion = null;
 
-          // illegal (just in case)
           if(move === null){
             board.position(game.fen());
             return;
@@ -354,10 +352,8 @@
         });
       });
 
-      // close modal if tap outside card
       document.getElementById('promoModal').addEventListener('click', (e)=>{
         if(e.target.id === 'promoModal'){
-          // Don't allow cancel promotion -> just close and reset piece position
           hidePromotion();
           pendingPromotion = null;
           board.position(game.fen());
@@ -365,7 +361,8 @@
       });
     }
 
-    init();
+    // Telegram webview дээр safe
+    window.addEventListener('load', init);
   </script>
 </body>
 </html>
