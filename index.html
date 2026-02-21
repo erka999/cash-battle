@@ -1,37 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Chess + Checkers</title>
-  <style>
-    body{margin:0;background:#111;color:#fff;font-family:sans-serif}
-    .top{
-      display:flex;gap:10px;justify-content:center;
-      padding:12px;background:#1b1b1b;position:sticky;top:0
-    }
-    button{
-      padding:10px 16px;border:0;border-radius:10px;
-      font-size:16px
-    }
-    iframe{
-      width:100%;
-      height:calc(100vh - 60px);
-      border:0;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cash Battle Game</title>
+
+<style>
+body{
+  background:#111;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+
+button{
+  padding:10px 15px;
+  margin:5px;
+  border-radius:10px;
+  border:none;
+  font-size:16px;
+}
+
+.card{
+  background:#1b1b1b;
+  padding:15px;
+  margin:10px;
+  border-radius:15px;
+}
+</style>
 </head>
+
 <body>
-  <div class="top">
-    <button onclick="openGame('chess.html')">♟ Шатар</button>
-    <button onclick="openGame('checkers.html')">⚫ Даам</button>
-  </div>
 
-  <iframe id="gameFrame" src="chess.html"></iframe>
+<h1>CashBattle Game</h1>
 
-  <script>
-    function openGame(file){
-      document.getElementById("gameFrame").src = file;
-    }
-  </script>
+<div class="card">
+  <button>♟ Chess</button>
+  <button>⚫ Checkers</button>
+</div>
+
+<div class="card">
+  <h2>International Checkers</h2>
+  <p><b>Turn:</b> White</p>
+  <button>Restart</button>
+</div>
+
+<div class="card">
+  <h3>Rules</h3>
+  <p>• If capture is possible, you must capture.</p>
+  <p>• Multi-capture is allowed.</p>
+  <p>• Reach last row → becomes King.</p>
+  <p>• King moves diagonally any distance.</p>
+</div>
+
+<div class="card">
+  <h3>Help</h3>
+  <p>Play with your friend and win coins.</p>
+</div>
+
 </body>
 </html>
