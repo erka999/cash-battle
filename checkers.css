@@ -328,3 +328,34 @@ body{
     inset 0 -10px 14px rgba(0,0,0,.35),
     0 0 0 3px rgba(255,215,0,.55) !important;
 }
+/* ===== FORCE pawn-style pieces ===== */
+
+.board .piece{
+  border-radius: 12px !important;   /* дугуйг болиулна */
+  position: relative !important;
+  transform: translateY(-2px);
+}
+
+/* доод суурь */
+.board .piece::before{
+  content:"";
+  position:absolute;
+  left:15%;
+  right:15%;
+  bottom:10%;
+  height:35%;
+  background: linear-gradient(#dcdcdc,#9f9f9f);
+  border-radius:14px;
+}
+
+/* толгой */
+.board .piece::after{
+  content:"";
+  position:absolute;
+  left:28%;
+  right:28%;
+  top:15%;
+  height:38%;
+  background: radial-gradient(circle,#ffffff,#bfbfbf);
+  border-radius:50%;
+}
