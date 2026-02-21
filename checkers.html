@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Төгс Даам</title>
+  <link rel="stylesheet" href="checkers.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="brand">⚫⚪ Төгс Даам</div>
+      <div class="status" id="status">Ээлж: ⚪ Цагаан</div>
+      <div class="actions">
+        <button id="restart">Дахин эхлүүлэх</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="board-wrap">
+        <div id="board" class="board" aria-label="Checkers board"></div>
+      </div>
+
+      <section class="panel">
+        <div class="card">
+          <div class="card-title">Дүрэм</div>
+          <ul class="rules">
+            <li>Идэх боломж байвал <b>заавал иднэ</b></li>
+            <li>Олон үсрэлт (multi-capture) боломжтой</li>
+            <li>Доод мөр хүрвэл <b>Хатан (King)</b> болно</li>
+            <li>Хатан урт диагоналиар явна, идэлт ч урт</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">Тусламж</div>
+          <div class="hint" id="hint">Чулуу дээр дар → боломжит нүүдэл сонго</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="checkers.js"></script>
+</body>
+</html>
