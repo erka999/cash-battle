@@ -5,12 +5,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const restartBtn = document.getElementById("restart");
 
   if (!boardEl || !statusEl || !hintEl || !restartBtn) {
-    // If these IDs are missing, nothing can render.
     console.error("Missing required elements: #board, #status, #hint, #restart");
     return;
   }
 
+  // ===== OPTIONAL MODE BUTTONS (if you add later in HTML) =====
+  // <button id="modeHuman">Human vs Human</button>
+  // <button id="modeBot">Play vs Bot</button>
+  const modeHumanBtn = document.getElementById("modeHuman");
+  const modeBotBtn = document.getElementById("modeBot");
+
   restartBtn.addEventListener("click", () => init(true));
+
+  // ===== BOT SETTINGS =====
+  // MODE: "human" => 2 хүн
+  // MODE: "bot"   => bot тоглоно
+  let MODE = "human";
+  let BOT_COLOR = "b"; // bot plays black by default
 
   /**
    * 8x8, play only on dark squares
@@ -64,13 +75,17 @@ document.addEventListener("DOMContentLoaded", () => {
     recomputeMustCapture();
     render();
     setHint("Tap a piece → then tap a highlighted square to move");
+
+    // If bot mode and bot starts first (if BOT_COLOR = "w")
+    maybeBotTurn();
   }
 
   function render() {
     boardEl.innerHTML = "";
 
     const turnText = S.turn === "w" ? "White" : "Black";
-    statusEl.textContent = `Turn: ${turnText}${S.mustCapture ? " — (Capture required)" : ""}`;
+    const modeText = MODE === "bot" ? ` — (Bot: ${BOT_COLOR === "w" ? "White" : "Black"})` : "";
+    statusEl.textContent = `Turn: ${turnText}${S.mustCapture ? " — (Capture required)" : ""}${modeText}`;
 
     const legalMap = new Map();
     for (const m of S.legal) legalMap.set(`${m.to.r},${m.to.c}`, m);
@@ -108,6 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
   function onSquareClick(e) {
     const r = Number(e.currentTarget.dataset.r);
     const c = Number(e.currentTarget.dataset.c);
+
+    // If bot mode and it's bot's turn -> block user input
+    if (MODE === "bot" && S.turn === BOT_COLOR) {
+      setHint("Bot is thinking... Please wait.");
+      return;
+    }
+
     const p = pieceAt(r, c);
 
     // If in multi-capture chain, only allow landing squares from legal list
@@ -213,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return res;
     }
 
-    // Normal piece capture: allow capture in all 4 diagonal directions (common variant)
+    // Normal piece capture: allow capture in all 4 diagonal directions
     const allDirs = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
     for (const [dr, dc] of allDirs) {
       const midR = r + dr, midC = c + dc;
@@ -266,6 +288,57 @@ document.addEventListener("DOMContentLoaded", () => {
     S.legal = [];
     render();
     setHint("Tap a piece → then tap a highlighted square to move");
+
+    // After turn switch -> maybe bot plays
+    maybeBotTurn();
+  }
+
+  // ===== BOT LOGIC (simple random, captures first) =====
+  function botPickMove() {
+    const moves = allMovesFor(S.turn);
+    if (!moves.length) return null;
+
+    const captures = moves.filter(m => m.cap && m.cap.length > 0);
+    const list = captures.length ? captures : moves;
+
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  function botMove() {
+    // If not bot's turn, stop
+    if (MODE !== "bot" || S.turn !== BOT_COLOR) return;
+
+    const move = botPickMove();
+    if (!move) {
+      setHint("Game over");
+      return;
+    }
+    applyMove(move);
+  }
+
+  function maybeBotTurn() {
+    if (MODE === "bot" && S.turn === BOT_COLOR) {
+      setHint("Bot thinking...");
+      setTimeout(botMove, 400);
+    }
+  }
+
+  // ===== OPTIONAL BUTTON WIRING =====
+  if (modeHumanBtn) {
+    modeHumanBtn.addEventListener("click", () => {
+      MODE = "human";
+      setHint("Mode: Human vs Human");
+      render();
+    });
+  }
+
+  if (modeBotBtn) {
+    modeBotBtn.addEventListener("click", () => {
+      MODE = "bot";
+      BOT_COLOR = "b"; // bot plays black
+      init(true);      // restart
+      setHint("Mode: Play vs Bot (Bot = Black)");
+    });
   }
 
   init(true);
